@@ -8,26 +8,12 @@ const prisma = new PrismaClient();
 async function main() {
   console.log(' Starting database seed...');
 
-  // Seed Exchange Rates using the exchange rate service
-  try {
-    await syncExchangeRates();
-    console.log('Exchange rates seeded successfully.');
-  } catch (error: any) {
-    console.error('Failed to seed exchange rates:', error.message);
-  }
-
-  // Seed Employees
-  console.log('Generating 10,000 employees...');
-  await prisma.employee.deleteMany({});
-
   const countries = [
     { name: 'United States', code: 'US', currency: 'USD', weight: 0.40, minSalary: 50000, maxSalary: 300000 },
     { name: 'India', code: 'IN', currency: 'INR', weight: 0.30, minSalary: 500000, maxSalary: 5000000 },
     { name: 'United Kingdom', code: 'UK', currency: 'GBP', weight: 0.20, minSalary: 30000, maxSalary: 180000 },
     { name: 'Germany', code: 'DE', currency: 'EUR', weight: 0.10, minSalary: 35000, maxSalary: 200000 },
   ];
-
-  const departments = ['Engineering', 'Sales', 'Marketing', 'HR', 'Finance', 'Operations', 'Product'];
 
   // Seed Countries config
   console.log('Seeding countries configuration...');
@@ -41,6 +27,16 @@ async function main() {
       },
     });
   }
+
+  // Seed Exchange Rates using the exchange rate service
+  try {
+    await syncExchangeRates();
+    console.log('Exchange rates seeded successfully.');
+  } catch (error: any) {
+    console.error('Failed to seed exchange rates:', error.message);
+  }
+
+  const departments = ['Engineering', 'Sales', 'Marketing', 'HR', 'Finance', 'Operations', 'Product'];
 
   // Seed Departments config
   console.log('Seeding departments configuration...');
@@ -90,6 +86,10 @@ async function main() {
   function getRandomStatus() {
     return Math.random() < 0.90 ? 'ACTIVE' : 'INACTIVE';
   }
+
+  // Seed Employees
+  console.log('Generating 10,000 employees...');
+  await prisma.employee.deleteMany({});
 
   const batchSize = 1000;
   const totalEmployees = 10000;
