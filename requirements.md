@@ -68,9 +68,9 @@ Internal tool. No authentication or role-based access control is required. The u
 **Trade-off:** A Next.js mono-repo using API Routes would have been simpler to deploy. A separate Express backend was chosen to demonstrate clear separation of concerns, explicit REST API design, and independent deployability — more representative of a production engineering context.
 
 ### Database
-**Chosen:** SQLite + Prisma ORM.
+**Chosen:** PostgreSQL (Neon DB) + Prisma ORM.
 
-**Trade-off:** SQLite is not suited for high-concurrency production workloads. For 10,000 employees and a single HR Manager user, it is entirely sufficient. Prisma provides type-safe queries, migration management, and easy swappability to PostgreSQL if scale demands it later.
+**Trade-off & SQLite Migration Rationale:** Initially, SQLite was chosen for local simplicity. However, in cloud deployment environments like Render's free tier, the container filesystem is ephemeral, meaning any local SQLite database changes are completely lost whenever the container restarts or redeploys. Since attaching persistent disks on Render is a paid feature, we migrated to **Neon DB (PostgreSQL)**. Neon provides a serverless PostgreSQL database with a generous free tier, enabling full data persistence across container redeploys at zero cost, while keeping the stack fully standard and compatible with Prisma.
 
 ### Multi-Currency Strategy
 **Chosen:** Salaries stored in local currency. A daily-updated, free, public API (`fawazahmed0/exchange-api`) cached via jsDelivr CDN is fetched at startup/seeding to populate the `ExchangeRate` table, which is used to normalise all values to USD for analytics.
@@ -83,9 +83,9 @@ Internal tool. No authentication or role-based access control is required. The u
 **Rationale:** Accessible, unstyled-by-default components with full customisability. No vendor lock-in. Production-quality output without opinionated design constraints.
 
 ### Deployment
-**Chosen:** Vercel (frontend) + Railway (backend with persistent volume for SQLite).
+**Chosen:** Vercel (frontend) + Render (backend Web Service) + Neon (cloud PostgreSQL database).
 
-**Trade-off:** SQLite on Railway requires a persistent volume to survive container restarts. This is configured explicitly. A managed database (e.g., PostgreSQL on Railway) would be more production-robust but adds setup overhead beyond the assessment scope.
+**Trade-off:** Hosting the backend on Render's free tier means the web service spins down after 15 minutes of inactivity, resulting in a brief cold start when accessed again. However, connecting to a managed, serverless database like Neon ensures all updates, status toggles, and seeded records are fully persisted permanently for free, bypassing ephemeral filesystem limitations of the free tier.
 
 ---
 

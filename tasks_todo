@@ -19,7 +19,7 @@
 
 ## Phase 1 — Backend: Express + TypeScript + Prisma Setup
 
-**Commit:** `chore(backend): express + typescript + prisma scaffold with sqlite schema`
+**Commit:** `chore(backend): express + typescript + prisma scaffold with postgresql schema`
 
 - [x ] Init `backend/` as a Node.js TypeScript project (`package.json`, `tsconfig.json`)
 - [x ] Install dependencies: `express`, `cors`, `dotenv`, `@prisma/client`, `zod`
@@ -30,7 +30,7 @@
 - [ x] Define `backend/prisma/schema.prisma`:
   - `Employee` model (id, employeeId, name, email, country, department, role, salary, currency, employmentType, status, hireDate, createdAt, updatedAt)
   - `ExchangeRate` model (id, currency, rateToUsd, effectiveDate)
-- [ x] Run `prisma migrate dev --name init` to generate SQLite DB
+- [ x] Run `prisma migrate dev --name init_postgres` to generate PostgreSQL DB schema
 - [ x] Verify `GET /api/health` returns `{ status: "ok" }`
 - [ x] Add `npm run dev`, `npm run build`, `npm start` scripts
 
@@ -159,7 +159,7 @@
   - [x] Update root `README.md` — full setup guide (clone → install → seed → run)
   - [x] Create `ARCHITECTURE.md` — system diagram, tech choices, API overview
 - [x] **Deployment Config**:
-  - [x] `backend/Dockerfile` (for Railway)
+  - [x] `backend/Dockerfile` (for Render)
   - [x] `backend/.env.example`
   - [x] `frontend/.env.example` (`NEXT_PUBLIC_API_URL`)
   - [x] `vercel.json` for frontend root directory config
@@ -171,7 +171,7 @@
 | Phase | Commit Message                              | Deliverable                                      |
 | ----- | ------------------------------------------- | ------------------------------------------------ |
 | 0     | `chore: initialize mono-repo`               | Repo structure, .gitignore, README               |
-| 1     | `chore(backend): express + prisma scaffold` | Running Express server, Prisma schema, SQLite DB |
+| 1     | `chore(backend): express + prisma scaffold` | Running Express server, Prisma schema, PostgreSQL (Neon DB) |
 | 2     | `feat(backend): seed 10,000 employees`      | 10k employees + exchange rates in DB             |
 | 3     | `feat(backend): employee CRUD APIs`         | Full REST API for employees                      |
 | 4     | `feat(backend): analytics APIs + tests`     | Analytics endpoints + full test suite            |

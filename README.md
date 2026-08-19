@@ -10,7 +10,7 @@ A web-based Employee Salary Management System designed for ACME Corp's HR Manage
 
 This project is a mono-repo containing two separate applications:
 
-- **[`backend/`]**: Express.js + TypeScript + SQLite + Prisma ORM. Serves REST APIs and aggregates analytics.
+- **[`backend/`]**: Express.js + TypeScript + PostgreSQL (Neon DB) + Prisma ORM. Serves REST APIs and aggregates analytics.
 - **[`frontend/`]**: Next.js 14 (App Router) + Tailwind CSS + shadcn/ui + Recharts.
 
 ---
@@ -21,6 +21,7 @@ This project is a mono-repo containing two separate applications:
 
 - Node.js 18+ or 20+
 - npm (Node Package Manager)
+- A Neon DB (PostgreSQL) database instance
 
 ### Step 1: Install Dependencies
 
@@ -38,15 +39,15 @@ npm install
 
 ### Step 2: Initialize Database and Seed Data
 
-Create the local SQLite database, run Prisma migrations, and seed exactly 10,000 synthetic employee records with random country, department, role, salary, and employment type distributions:
+Configure your `DATABASE_URL` in `backend/.env` to point to your Neon DB connection string, then run Prisma migrations and seed exactly 10,000 synthetic employee records:
 
 ```bash
 cd ../backend
 
-# Run Prisma migrations (creates SQLite database E:/Interview/Salary Management Assessment/backend/prisma/dev.db)
-npx prisma migrate dev --name init
+# Run Prisma migrations on Neon DB
+npx prisma migrate dev --name init_postgres
 
-# Seed the database (runs seeded Faker module to populate 10,000 records)
+# Seed the database (runs local ts-node seed script to populate 10,000 records on Neon DB)
 npx prisma db seed
 ```
 
