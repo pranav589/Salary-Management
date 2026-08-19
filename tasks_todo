@@ -6,40 +6,43 @@
 ---
 
 ## Phase 0 — Repo & Mono-repo Scaffolding
+
 **Commit:** `chore: initialize mono-repo with backend and frontend structure`
 
-- [ ] `git init` in `E:\Interview\Salary Management Assessment`
-- [ ] Create root `.gitignore` (node_modules, *.db, .env, dist, .next)
-- [ ] Create root `README.md` (project overview, setup instructions placeholder)
-- [ ] Create `backend/` and `frontend/` empty directories with `.gitkeep`
-- [ ] Create `requirements.md` (already done ✅)
+- [x ] `git init` in `E:\Interview\Salary Management Assessment`
+- [x ] Create root `.gitignore` (node_modules, \*.db, .env, dist, .next)
+- [x ] Create root `README.md` (project overview, setup instructions placeholder)
+- [ x] Create `backend/` and `frontend/` empty directories with `.gitkeep`
+- [x ] Create `requirements.md` (already done ✅)
 
 ---
 
 ## Phase 1 — Backend: Express + TypeScript + Prisma Setup
+
 **Commit:** `chore(backend): express + typescript + prisma scaffold with sqlite schema`
 
-- [ ] Init `backend/` as a Node.js TypeScript project (`package.json`, `tsconfig.json`)
-- [ ] Install dependencies: `express`, `cors`, `dotenv`, `@prisma/client`, `zod`
-- [ ] Install dev dependencies: `typescript`, `ts-node`, `nodemon`, `prisma`, `jest`, `supertest`, `@types/*`
-- [ ] Create `backend/src/app.ts` — Express app with CORS, JSON middleware, health route
-- [ ] Create `backend/src/server.ts` — entry point (listens on PORT)
-- [ ] Create `backend/src/lib/prisma.ts` — Prisma singleton
-- [ ] Define `backend/prisma/schema.prisma`:
+- [x ] Init `backend/` as a Node.js TypeScript project (`package.json`, `tsconfig.json`)
+- [x ] Install dependencies: `express`, `cors`, `dotenv`, `@prisma/client`, `zod`
+- [ x] Install dev dependencies: `typescript`, `ts-node`, `nodemon`, `prisma`, `jest`, `supertest`, `@types/*`
+- [x ] Create `backend/src/app.ts` — Express app with CORS, JSON middleware, health route
+- [x ] Create `backend/src/server.ts` — entry point (listens on PORT)
+- [ x] Create `backend/src/lib/prisma.ts` — Prisma singleton
+- [ x] Define `backend/prisma/schema.prisma`:
   - `Employee` model (id, employeeId, name, email, country, department, role, salary, currency, employmentType, status, hireDate, createdAt, updatedAt)
   - `ExchangeRate` model (id, currency, rateToUsd, effectiveDate)
-- [ ] Run `prisma migrate dev --name init` to generate SQLite DB
-- [ ] Verify `GET /api/health` returns `{ status: "ok" }`
-- [ ] Add `npm run dev`, `npm run build`, `npm start` scripts
+- [ x] Run `prisma migrate dev --name init` to generate SQLite DB
+- [ x] Verify `GET /api/health` returns `{ status: "ok" }`
+- [ x] Add `npm run dev`, `npm run build`, `npm start` scripts
 
 ---
 
 ## Phase 2 — Backend: Seed Script (10,000 Employees)
+
 **Commit:** `feat(backend): seed 10,000 employees with faker and exchange rate table`
 
-- [ ] Install `@faker-js/faker`
-- [ ] Create `backend/prisma/seed.ts`:
-  - Seed `ExchangeRate` table by fetching daily rates from `fawazahmed0/exchange-api` (with hardcoded fallbacks: USD=1.0, GBP=1.27, EUR=1.08, INR=0.012 if the API is unreachable)
+- [x] Install `@faker-js/faker`
+- [x] Create `backend/prisma/seed.ts`:
+  - Seed `ExchangeRate` table by fetching daily rates from `fawazahmed0/exchange-api`
   - Generate 10,000 employees with realistic distribution:
     - Countries: US 40%, IN 30%, UK 20%, DE 10%
     - Departments: Engineering, Sales, Marketing, HR, Finance, Operations, Product
@@ -48,13 +51,14 @@
     - Salary ranges per country (local currency)
     - Unique emails, human-readable `EMP-XXXXX` IDs, realistic hire dates
   - Use `prisma.createMany` with batching for performance
-- [ ] Add `"prisma": { "seed": "ts-node prisma/seed.ts" }` to `package.json`
-- [ ] Run seed and verify 10,000 records in DB
-- [ ] Add `backend/prisma/seed.ts` to git
+- [x] Add `"prisma": { "seed": "ts-node prisma/seed.ts" }` to `package.json`
+- [x] Run seed and verify 10,000 records in DB
+- [x] Add `backend/prisma/seed.ts` to git
 
 ---
 
 ## Phase 3 — Backend: Employee APIs
+
 **Commit:** `feat(backend): employee CRUD APIs with pagination, search, filter, sort`
 
 - [ ] Create `backend/src/validators/employee.ts` — Zod schemas for create/update
@@ -74,6 +78,7 @@
 ---
 
 ## Phase 4 — Backend: Analytics APIs + All Backend Tests
+
 **Commit:** `feat(backend): analytics APIs + unit tests for all routes and helpers`
 
 - [ ] Create `backend/src/controllers/analyticsController.ts`:
@@ -105,6 +110,7 @@
 ---
 
 ## Phase 5 — Frontend: Setup + Employee List + Forms + Detail
+
 **Commit:** `feat(frontend): next.js setup, employee list, add/edit/deactivate, detail page`
 
 - [ ] Init `frontend/` with `npx create-next-app@latest` (TypeScript, App Router, Tailwind)
@@ -133,6 +139,7 @@
 ---
 
 ## Phase 6 — Frontend: Dashboard + Frontend Tests + Docs + Deploy Config
+
 **Commit:** `feat(frontend): analytics dashboard, tests, docs, and deployment config`
 
 - [ ] **Dashboard Page** (`/dashboard`):
@@ -162,12 +169,12 @@
 
 ## Summary
 
-| Phase | Commit Message | Deliverable |
-|---|---|---|
-| 0 | `chore: initialize mono-repo` | Repo structure, .gitignore, README |
-| 1 | `chore(backend): express + prisma scaffold` | Running Express server, Prisma schema, SQLite DB |
-| 2 | `feat(backend): seed 10,000 employees` | 10k employees + exchange rates in DB |
-| 3 | `feat(backend): employee CRUD APIs` | Full REST API for employees |
-| 4 | `feat(backend): analytics APIs + tests` | Analytics endpoints + full test suite |
-| 5 | `feat(frontend): employee management UI` | List, add, edit, deactivate, detail pages |
-| 6 | `feat(frontend): dashboard + tests + docs` | Charts, RTL tests, README, deploy config |
+| Phase | Commit Message                              | Deliverable                                      |
+| ----- | ------------------------------------------- | ------------------------------------------------ |
+| 0     | `chore: initialize mono-repo`               | Repo structure, .gitignore, README               |
+| 1     | `chore(backend): express + prisma scaffold` | Running Express server, Prisma schema, SQLite DB |
+| 2     | `feat(backend): seed 10,000 employees`      | 10k employees + exchange rates in DB             |
+| 3     | `feat(backend): employee CRUD APIs`         | Full REST API for employees                      |
+| 4     | `feat(backend): analytics APIs + tests`     | Analytics endpoints + full test suite            |
+| 5     | `feat(frontend): employee management UI`    | List, add, edit, deactivate, detail pages        |
+| 6     | `feat(frontend): dashboard + tests + docs`  | Charts, RTL tests, README, deploy config         |

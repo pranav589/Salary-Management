@@ -52,7 +52,7 @@ Internal tool. No authentication or role-based access control is required. The u
 | **Salary revision history** | Adds schema versioning complexity. Not required for core CRUD. Can be added in a future iteration. |
 | **Salary bands / grades** | No benchmark or grade data provided. Meaningful bands cannot be defined without additional business input. |
 | **Bulk Excel import** | The 10,000-employee dataset is populated via a clean seed script. An import tool adds UI/parsing complexity without adding value to the assessment. |
-| **Real-time exchange rates** | Real-time rate APIs introduce rate-limit risks. We use the free, daily-updated `fawazahmed0/exchange-api` (cached via jsDelivr CDN) to seed rates at startup, with hardcoded rates as a robust fallback. |
+| **Real-time exchange rates** | Real-time rate APIs introduce rate-limit risks. We fetch the free, daily-updated `fawazahmed0/exchange-api` (cached via jsDelivr CDN) to seed rates at startup. |
 | **Approval workflows** | Requires multi-user roles and notification infrastructure. Out of scope given single-user context. |
 | **Multi-user / RBAC** | No multi-user requirement. Single HR Manager persona. |
 | **Email notifications** | No user accounts or communication workflows in scope. |
@@ -73,18 +73,9 @@ Internal tool. No authentication or role-based access control is required. The u
 **Trade-off:** SQLite is not suited for high-concurrency production workloads. For 10,000 employees and a single HR Manager user, it is entirely sufficient. Prisma provides type-safe queries, migration management, and easy swappability to PostgreSQL if scale demands it later.
 
 ### Multi-Currency Strategy
-**Chosen:** Salaries stored in local currency. A daily-updated, free, public API (`fawazahmed0/exchange-api`) cached via jsDelivr CDN is fetched at startup/seeding (with fixed snapshot rates as a robust fallback) to populate the `ExchangeRate` table, which is used to normalise all values to USD for analytics.
+**Chosen:** Salaries stored in local currency. A daily-updated, free, public API (`fawazahmed0/exchange-api`) cached via jsDelivr CDN is fetched at startup/seeding to populate the `ExchangeRate` table, which is used to normalise all values to USD for analytics.
 
-**Fallback Snapshot Rates (if API is unreachable):**
-
-| Currency | Rate to USD |
-|---|---|
-| USD | 1.00 |
-| GBP | 1.27 |
-| EUR | 1.08 |
-| INR | 0.012 |
-
-**Trade-off:** Real-time APIs introduce rate-limit risks and API key management. Using a daily-updated public CDN API provides realistic, dynamic rates at zero cost/key-management overhead, while the hardcoded fallback ensures the system is resilient and always boots successfully.
+**Trade-off:** Real-time APIs introduce rate-limit risks and API key management. Using a daily-updated public CDN API provides realistic, dynamic rates at zero cost/key-management overhead without requiring API keys or authentication.
 
 ### Component Library
 **Chosen:** shadcn/ui + Tailwind CSS.
