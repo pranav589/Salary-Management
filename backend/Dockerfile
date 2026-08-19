@@ -6,6 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma/
 
+RUN apk add --no-cache openssl
 RUN npm ci
 
 COPY . .
@@ -21,6 +22,7 @@ WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma/
 
+RUN apk add --no-cache openssl
 RUN npm ci --only=production
 
 COPY --from=builder /app/dist ./dist
