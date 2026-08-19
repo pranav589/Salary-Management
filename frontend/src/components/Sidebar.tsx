@@ -97,20 +97,7 @@ export default function Sidebar() {
 
       {/* Live Exchange Rate Widget */}
       <div className="p-4 border-t border-[#1E294B] bg-[#060A1E]/30 m-4 rounded-xl border border-[#1E294B]/50">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2 text-xs text-[#9BA3B2]">
-            <Circle className="w-2.5 h-2.5 fill-[#D3FE73] text-[#D3FE73] animate-pulse" />
-            <span>FX rates live</span>
-          </div>
-          {lastSynced && (
-            <span className="text-[10px] text-[#9BA3B2] bg-[#1E294B] px-1.5 py-0.5 rounded">
-              Synced: {lastSynced}
-            </span>
-          )}
-        </div>
-        <p className="text-xs text-[#9BA3B2] mb-3 leading-relaxed">
-          Daily USD conversions computed in real time.
-        </p>
+        
         <button
           onClick={handleSync}
           disabled={syncing}

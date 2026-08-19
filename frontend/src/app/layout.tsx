@@ -35,7 +35,7 @@ export default function RootLayout({
       <body className="bg-[#060A1E] text-[#F1F1F2] antialiased min-h-screen flex">
         <QueryProvider>
           <Sidebar />
-          <main className="flex-1 pl-64 min-h-screen bg-[#060A1E]">
+          <main className="flex-1 pl-64 min-h-screen bg-[#060A1E] min-w-0">
             {children}
           </main>
         </QueryProvider>

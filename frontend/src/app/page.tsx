@@ -90,7 +90,7 @@ export default function Home() {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8 pb-16">
+    <div className="p-8 max-w-7xl mx-auto space-y-8 pb-16 w-full">
       {/* Header */}
       <div>
         <h1 className="font-serif text-3xl md:text-4xl font-bold tracking-tight mb-2">
