@@ -18,7 +18,7 @@ const frauncesSerif = Fraunces({
 
 export const metadata: Metadata = {
   title: "ACME Salary Management System",
-  description: "Web-based salary management application built for ACME Corp, inspired by Incubyte design system",
+  description: "Web-based salary management application built for ACME Corp",
 };
 
 export default function RootLayout({

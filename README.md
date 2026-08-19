@@ -1,6 +1,6 @@
 # ACME Salary Management System
 
-A web-based Employee Salary Management System designed for ACME Corp's HR Manager, built following a strict design system inspired by **Incubyte (incubyte.co)**.
+A web-based Employee Salary Management System designed for ACME Corp's HR Manager, built following a strict design system.
 
 ## System Architecture
 
