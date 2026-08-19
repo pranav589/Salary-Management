@@ -61,19 +61,19 @@
 
 **Commit:** `feat(backend): employee CRUD APIs with pagination, search, filter, sort`
 
-- [ ] Create `backend/src/validators/employee.ts` — Zod schemas for create/update
-- [ ] Create `backend/src/lib/currency.ts` — `toUSD(amount, currency)` helper using DB exchange rates
-- [ ] Create `backend/src/middleware/validate.ts` — Zod validation middleware
-- [ ] Create `backend/src/middleware/errorHandler.ts` — global error handler
-- [ ] Create `backend/src/controllers/employeeController.ts`:
+- [x] Create `backend/src/validators/employee.ts` — Zod schemas for create/update
+- [x] Create `backend/src/lib/currency.ts` — `toUSD(amount, currency)` helper using DB exchange rates
+- [x] Create `backend/src/middleware/validate.ts` — Zod validation middleware
+- [x] Create `backend/src/middleware/errorHandler.ts` — global error handler
+- [x] Create `backend/src/controllers/employeeController.ts`:
   - `listEmployees` — paginated, searchable, filterable (country, dept, type, status), sortable
   - `getEmployee` — single employee by ID
   - `createEmployee` — validated create with auto-generated employeeId
   - `updateEmployee` — full PUT update with validation
   - `updateEmployeeStatus` — PATCH status (ACTIVE ↔ INACTIVE)
-- [ ] Create `backend/src/routes/employees.ts` — wire routes to controller
-- [ ] Register routes in `app.ts`
-- [ ] Manual test all endpoints with curl / REST client
+- [x] Create `backend/src/routes/employees.ts` — wire routes to controller
+- [x] Register routes in `app.ts`
+- [x] Manual test all endpoints with curl / REST client
 
 ---
 
