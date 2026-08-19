@@ -28,6 +28,30 @@ async function main() {
   ];
 
   const departments = ['Engineering', 'Sales', 'Marketing', 'HR', 'Finance', 'Operations', 'Product'];
+
+  // Seed Countries config
+  console.log('Seeding countries configuration...');
+  await prisma.country.deleteMany({});
+  for (const c of countries) {
+    await prisma.country.create({
+      data: {
+        code: c.code,
+        name: c.name,
+        currency: c.currency,
+      },
+    });
+  }
+
+  // Seed Departments config
+  console.log('Seeding departments configuration...');
+  await prisma.department.deleteMany({});
+  for (const d of departments) {
+    await prisma.department.create({
+      data: {
+        name: d,
+      },
+    });
+  }
   
   const rolesMap: Record<string, string[]> = {
     Engineering: ['Software Engineer', 'Senior Engineer', 'Lead Engineer', 'Engineering Manager', 'QA Engineer'],

@@ -10,6 +10,13 @@ jest.mock('../../src/lib/prisma', () => ({
     },
     exchangeRate: {
       findMany: jest.fn(),
+      findUnique: jest.fn().mockResolvedValue({ currency: 'USD', rateToUsd: 1.0 }),
+    },
+    country: {
+      findUnique: jest.fn().mockResolvedValue({ code: 'US', name: 'United States', currency: 'USD' }),
+    },
+    department: {
+      findUnique: jest.fn().mockResolvedValue({ name: 'Engineering' }),
     },
   },
 }));

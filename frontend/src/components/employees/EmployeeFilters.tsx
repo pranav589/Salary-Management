@@ -8,6 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useQuery } from '@tanstack/react-query';
+import { getSystemConfig } from '@/lib/api';
 
 interface EmployeeFiltersProps {
   search: string;
@@ -22,30 +24,6 @@ interface EmployeeFiltersProps {
   setStatus: (val: string) => void;
   clearFilters: () => void;
 }
-
-const COUNTRIES = [
-  { value: 'ALL', label: 'All Countries' },
-  { value: 'US', label: 'United States (US)' },
-  { value: 'IN', label: 'India (IN)' },
-  { value: 'UK', label: 'United Kingdom (UK)' },
-  { value: 'DE', label: 'Germany (DE)' },
-];
-
-const DEPARTMENTS = [
-  'Engineering',
-  'Product',
-  'Design',
-  'Marketing',
-  'Sales',
-  'HR',
-  'Finance',
-  'Operations',
-];
-
-const DEPARTMENT_OPTIONS = [
-  { value: 'ALL', label: 'All Departments' },
-  ...DEPARTMENTS.map((d) => ({ value: d, label: d })),
-];
 
 const EMPLOYMENT_TYPES = [
   { value: 'ALL', label: 'All Types' },
@@ -74,6 +52,23 @@ export default function EmployeeFilters({
   setStatus,
   clearFilters,
 }: EmployeeFiltersProps) {
+  const { data: config } = useQuery({
+    queryKey: ['systemConfig'],
+    queryFn: getSystemConfig,
+  });
+
+  const countries = config?.countries || [];
+  const departments = config?.departments || [];
+
+  const countryOptions = [
+    { value: 'ALL', label: 'All Countries' },
+    ...countries.map((c) => ({ value: c.code, label: `${c.name} (${c.code})` })),
+  ];
+
+  const departmentOptions = [
+    { value: 'ALL', label: 'All Departments' },
+    ...departments.map((d) => ({ value: d, label: d })),
+  ];
   return (
     <div className="bg-[#0B1333] border border-[#1E294B] rounded-2xl p-5 space-y-4">
       <div className="flex flex-col md:flex-row gap-4">
@@ -106,7 +101,7 @@ export default function EmployeeFilters({
               <SelectValue placeholder="All Countries" />
             </SelectTrigger>
             <SelectContent className="bg-[#0B1333] border-[#1E294B] text-[#9BA3B2]">
-              {COUNTRIES.map((opt) => (
+              {countryOptions.map((opt) => (
                 <SelectItem key={opt.value} value={opt.value}>
                   {opt.label}
                 </SelectItem>
@@ -122,7 +117,7 @@ export default function EmployeeFilters({
               <SelectValue placeholder="All Departments" />
             </SelectTrigger>
             <SelectContent className="bg-[#0B1333] border-[#1E294B] text-[#9BA3B2]">
-              {DEPARTMENT_OPTIONS.map((opt) => (
+              {departmentOptions.map((opt) => (
                 <SelectItem key={opt.value} value={opt.value}>
                   {opt.label}
                 </SelectItem>

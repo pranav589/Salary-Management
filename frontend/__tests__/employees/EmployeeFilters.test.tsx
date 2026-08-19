@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import EmployeeFilters from '../../src/components/employees/EmployeeFilters';
 import '@testing-library/jest-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Mock UI Select components with native HTML select elements for seamless JSDOM interactions
 jest.mock('../../src/components/ui/select', () => {
@@ -15,6 +16,32 @@ jest.mock('../../src/components/ui/select', () => {
     SelectTrigger: ({ children }: any) => <>{children}</>,
     SelectValue: ({ placeholder }: any) => <>{placeholder}</>,
   };
+});
+
+// Mock api config loader
+jest.mock('../../src/lib/api', () => {
+  return {
+    api: {
+      get: jest.fn(),
+    },
+    getSystemConfig: jest.fn().mockResolvedValue({
+      countries: [
+        { code: 'US', name: 'United States', currency: 'USD' },
+        { code: 'IN', name: 'India', currency: 'INR' },
+        { code: 'UK', name: 'United Kingdom', currency: 'GBP' },
+        { code: 'DE', name: 'Germany', currency: 'EUR' },
+      ],
+      departments: ['Engineering', 'Marketing', 'Product'],
+    }),
+  };
+});
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
 });
 
 describe('EmployeeFilters Component', () => {
@@ -43,15 +70,23 @@ describe('EmployeeFilters Component', () => {
     jest.clearAllMocks();
   });
 
+  const renderWithClient = (ui: React.ReactElement) => {
+    return render(
+      <QueryClientProvider client={queryClient}>
+        {ui}
+      </QueryClientProvider>
+    );
+  };
+
   it('renders search input and dropdown selectors correctly', () => {
-    render(<EmployeeFilters {...defaultProps} />);
+    renderWithClient(<EmployeeFilters {...defaultProps} />);
     
     expect(screen.getByPlaceholderText('Search by name, ID or email...')).toBeInTheDocument();
     expect(screen.getAllByTestId('mock-select')).toHaveLength(4);
   });
 
   it('calls setSearch when typing in search input', () => {
-    render(<EmployeeFilters {...defaultProps} />);
+    renderWithClient(<EmployeeFilters {...defaultProps} />);
     
     const searchInput = screen.getByPlaceholderText('Search by name, ID or email...');
     fireEvent.change(searchInput, { target: { value: 'Alice' } });
@@ -60,7 +95,7 @@ describe('EmployeeFilters Component', () => {
   });
 
   it('calls clearFilters when clicking the clear filters button', () => {
-    render(<EmployeeFilters {...defaultProps} />);
+    renderWithClient(<EmployeeFilters {...defaultProps} />);
     
     const clearBtn = screen.getByRole('button', { name: /Clear Filters/i });
     fireEvent.click(clearBtn);
@@ -69,7 +104,7 @@ describe('EmployeeFilters Component', () => {
   });
 
   it('triggers setCountry / setDepartment / setEmploymentType / setStatus callbacks when select options change', () => {
-    render(<EmployeeFilters {...defaultProps} />);
+    renderWithClient(<EmployeeFilters {...defaultProps} />);
     
     const selectElements = screen.getAllByTestId('mock-select');
     

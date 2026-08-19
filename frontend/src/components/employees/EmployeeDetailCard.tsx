@@ -1,5 +1,7 @@
 import { Employee } from '@/types';
 import { formatUsd, formatLocalCurrency, formatDate, getCountryName } from '@/lib/formatters';
+import { useQuery } from '@tanstack/react-query';
+import { getSystemConfig } from '@/lib/api';
 import {
   Briefcase,
   Mail,
@@ -15,6 +17,10 @@ interface EmployeeDetailCardProps {
 }
 
 export default function EmployeeDetailCard({ employee }: EmployeeDetailCardProps) {
+  const { data: config } = useQuery({
+    queryKey: ['systemConfig'],
+    queryFn: getSystemConfig,
+  });
   return (
     <div className="bg-[#0B1333] border border-[#1E294B] rounded-3xl overflow-hidden shadow-xl">
       {/* Profile Banner */}
@@ -86,7 +92,7 @@ export default function EmployeeDetailCard({ employee }: EmployeeDetailCardProps
               <div>
                 <span className="block text-xs text-[#9BA3B2]">Tax Location</span>
                 <span className="text-sm font-semibold text-[#F1F1F2]">
-                  {getCountryName(employee.country)} ({employee.country})
+                  {getCountryName(employee.country, config?.countries)} ({employee.country})
                 </span>
               </div>
             </div>

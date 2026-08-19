@@ -8,3 +8,13 @@ export const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+export interface SystemConfig {
+  countries: { code: string; name: string; currency: string }[];
+  departments: string[];
+}
+
+export async function getSystemConfig(): Promise<SystemConfig> {
+  const { data } = await api.get('/configs');
+  return data.data;
+}

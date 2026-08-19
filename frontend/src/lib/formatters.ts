@@ -40,14 +40,11 @@ export function formatDate(dateString: string): string {
 }
 
 /**
- * Resolves a full country name from an ISO country code.
+ * Resolves a full country name from an ISO country code using a dynamic countries list.
  */
-export function getCountryName(code: string): string {
-  const countries: Record<string, string> = {
-    US: 'United States',
-    IN: 'India',
-    UK: 'United Kingdom',
-    DE: 'Germany',
-  };
-  return countries[code.toUpperCase()] || code;
+export function getCountryName(code: string, countriesList?: { code: string; name: string }[]): string {
+  if (!code) return '-';
+  if (!countriesList) return code;
+  const match = countriesList.find((c) => c.code.toUpperCase() === code.toUpperCase());
+  return match ? match.name : code;
 }

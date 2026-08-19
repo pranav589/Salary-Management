@@ -16,12 +16,24 @@ jest.mock('../../src/lib/prisma', () => ({
     },
     exchangeRate: {
       findMany: jest.fn(),
-      findUnique: jest.fn(),
+      findUnique: jest.fn().mockResolvedValue({ currency: 'USD', rateToUsd: 1.0 }),
+    },
+    country: {
+      findUnique: jest.fn().mockResolvedValue({ code: 'US', name: 'United States', currency: 'USD' }),
+    },
+    department: {
+      findUnique: jest.fn().mockResolvedValue({ name: 'Engineering' }),
     },
   },
 }));
 
 describe('Employee API Routes', () => {
+  beforeEach(() => {
+    (prisma.country.findUnique as jest.Mock).mockResolvedValue({ code: 'US', name: 'United States', currency: 'USD' });
+    (prisma.department.findUnique as jest.Mock).mockResolvedValue({ name: 'Engineering' });
+    (prisma.exchangeRate.findUnique as jest.Mock).mockResolvedValue({ currency: 'USD', rateToUsd: 1.0 });
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -122,7 +134,6 @@ describe('Employee API Routes', () => {
       });
 
       const res = await request(app).post('/api/employees').send(validPayload);
-
       expect(res.status).toBe(201);
       expect(res.body.success).toBe(true);
       expect(res.body.data.employeeId).toBe('EMP-00043');

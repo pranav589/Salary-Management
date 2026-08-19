@@ -14,6 +14,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useQuery } from '@tanstack/react-query';
+import { getSystemConfig } from '@/lib/api';
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -39,11 +41,18 @@ interface EmployeeFormProps {
 export default function EmployeeForm({ employee, onSubmit, onCancel }: EmployeeFormProps) {
   const [loading, setLoading] = useState(false);
 
+  const { data: config } = useQuery({
+    queryKey: ['systemConfig'],
+    queryFn: getSystemConfig,
+  });
+
   const {
     register,
     handleSubmit,
     reset,
     control,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -60,6 +69,18 @@ export default function EmployeeForm({ employee, onSubmit, onCancel }: EmployeeF
       hireDate: new Date().toISOString().split('T')[0],
     },
   });
+
+  const selectedCountry = watch('country');
+
+  // Auto-populate currency when country is selected
+  useEffect(() => {
+    if (selectedCountry && config?.countries) {
+      const match = config.countries.find((c) => c.code === selectedCountry);
+      if (match) {
+        setValue('currency', match.currency);
+      }
+    }
+  }, [selectedCountry, config, setValue]);
 
   // Load existing employee data if editing
   useEffect(() => {
@@ -93,26 +114,8 @@ export default function EmployeeForm({ employee, onSubmit, onCancel }: EmployeeF
       setLoading(false);
     }
   };
-
-  const countries = [
-    { code: 'US', name: 'United States (US)' },
-    { code: 'IN', name: 'India (IN)' },
-    { code: 'UK', name: 'United Kingdom (UK)' },
-    { code: 'DE', name: 'Germany (DE)' },
-  ];
-
-  const currencies = ['USD', 'INR', 'GBP', 'EUR'];
-
-  const departments = [
-    'Engineering',
-    'Product',
-    'Design',
-    'Marketing',
-    'Sales',
-    'HR',
-    'Finance',
-    'Operations',
-  ];
+  const countries = config?.countries || [];
+  const departments = config?.departments || [];
 
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-5 text-[#F1F1F2]">
@@ -237,23 +240,11 @@ export default function EmployeeForm({ employee, onSubmit, onCancel }: EmployeeF
         {/* Currency */}
         <div>
           <label className="block text-xs font-semibold text-[#9BA3B2] uppercase tracking-wider mb-2">Currency</label>
-          <Controller
-            name="currency"
-            control={control}
-            render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger className="w-full bg-[#060A1E] border-[#1E294B] text-sm text-[#9BA3B2] focus:border-[#D3FE73] focus:ring-0">
-                  <SelectValue placeholder="Select Currency" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#0B1333] border-[#1E294B] text-[#9BA3B2]">
-                  {currencies.map((c) => (
-                    <SelectItem key={c} value={c}>
-                      {c}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
+          <input
+            {...register('currency')}
+            readOnly
+            className="w-full bg-[#060A1E]/50 border border-[#1E294B] rounded-lg px-4 py-2.5 text-sm text-[#9BA3B2] cursor-not-allowed outline-none"
+            placeholder="Select a country first"
           />
           {errors.currency && <p className="text-red-400 text-xs mt-1.5">{errors.currency.message}</p>}
         </div>

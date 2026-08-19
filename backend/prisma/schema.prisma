@@ -34,3 +34,18 @@ model ExchangeRate {
 
   @@map("exchange_rates")
 }
+
+model Country {
+  code     String @id
+  name     String
+  currency String
+
+  @@map("countries")
+}
+
+model Department {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  @@map("departments")
+}

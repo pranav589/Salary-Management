@@ -5,6 +5,7 @@ import { errorHandler } from './middleware/errorHandler';
 import employeesRouter from './routes/employees';
 import analyticsRouter from './routes/analytics';
 import exchangeRatesRouter from './routes/exchangeRates';
+import configsRouter from './routes/configs';
 
 // Load environment variables
 dotenv.config();
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/employees', employeesRouter);
 app.use('/api/analytics', analyticsRouter);
 app.use('/api/exchange-rates', exchangeRatesRouter);
+app.use('/api/configs', configsRouter);
 
 // Health check route
 app.get('/api/health', (req, res) => {
