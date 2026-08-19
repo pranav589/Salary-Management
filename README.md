@@ -2,6 +2,10 @@
 
 A web-based Employee Salary Management System designed for ACME Corp's HR Manager, built following a strict design system inspired by **Incubyte (incubyte.co)**.
 
+## System Architecture
+
+![ACME Salary System Architecture](salaray-management-architectural-diagram.png)
+
 ## Project Structure
 
 This project is a mono-repo containing two separate applications:
@@ -17,3 +21,5 @@ Detailed instructions for running, seeding, and testing both applications will b
 For full product framing and specifications, see:
 - [Requirements Document](requirements.md)
 - [Design System Specification](design_system.md)
+- [Architecture Details](ARCHITECTURE.md)
+

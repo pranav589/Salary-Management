@@ -3,6 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { errorHandler } from './middleware/errorHandler';
 import employeesRouter from './routes/employees';
+import analyticsRouter from './routes/analytics';
+import exchangeRatesRouter from './routes/exchangeRates';
 
 // Load environment variables
 dotenv.config();
@@ -26,6 +28,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // API Routes
 app.use('/api/employees', employeesRouter);
+app.use('/api/analytics', analyticsRouter);
+app.use('/api/exchange-rates', exchangeRatesRouter);
 
 // Health check route
 app.get('/api/health', (req, res) => {

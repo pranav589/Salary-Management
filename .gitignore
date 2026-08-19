@@ -31,3 +31,7 @@ dev.db
 # OS files
 .DS_Store
 Thumbs.db
+
+# Test coverage
+coverage/
+

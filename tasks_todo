@@ -81,31 +81,31 @@
 
 **Commit:** `feat(backend): analytics APIs + unit tests for all routes and helpers`
 
-- [ ] Create `backend/src/controllers/analyticsController.ts`:
+- [x] Create `backend/src/controllers/analyticsController.ts`:
   - `getOverview` — total active employees, total monthly payroll (USD), avg salary (USD), median salary (USD)
   - `getByCountry` — headcount + total payroll grouped by country
   - `getByDepartment` — headcount + total payroll grouped by department
   - `getSalaryDistribution` — histogram buckets (USD-normalised salary bands)
-- [ ] Create `backend/src/routes/analytics.ts`
-- [ ] Create `backend/src/routes/exchangeRates.ts` — GET exchange rates
-- [ ] Register analytics + exchange-rate routes in `app.ts`
-- [ ] Write `backend/__tests__/lib/currency.test.ts`:
+- [x] Create `backend/src/routes/analytics.ts`
+- [x] Create `backend/src/routes/exchangeRates.ts` — GET exchange rates
+- [x] Register analytics + exchange-rate routes in `app.ts`
+- [x] Write `backend/__tests__/lib/currency.test.ts`:
   - `toUSD` with each currency
   - Edge cases: zero, large values
-- [ ] Write `backend/__tests__/routes/employees.test.ts`:
+- [x] Write `backend/__tests__/routes/employees.test.ts`:
   - GET list: pagination, search, filter, sort
   - POST: valid create, missing fields (400), duplicate email (409)
   - GET /:id: found, not found (404)
   - PUT /:id: valid update, validation error
   - PATCH /:id/status: activate, deactivate
-- [ ] Write `backend/__tests__/routes/analytics.test.ts`:
+- [x] Write `backend/__tests__/routes/analytics.test.ts`:
   - Overview KPIs: correct totals
   - By-country: all 4 countries present
   - By-department: correct grouping
   - Salary distribution: correct bucket counts
-- [ ] Configure Jest (`jest.config.ts`, test DB setup/teardown)
-- [ ] Run `npm test` — all tests pass
-- [ ] Run `npm run test:coverage` — target ≥ 70%
+- [x] Configure Jest (`jest.config.ts`, test DB setup/teardown)
+- [x] Run `npm test` — all tests pass
+- [x] Run `npm run test:coverage` — target ≥ 70%
 
 ---
 
