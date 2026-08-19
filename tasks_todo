@@ -1,0 +1,173 @@
+# ACME Salary Management — Phased Build Plan
+
+> Each phase = one meaningful Git commit.
+> Phases are ordered so every commit leaves the repo in a working, runnable state.
+
+---
+
+## Phase 0 — Repo & Mono-repo Scaffolding
+**Commit:** `chore: initialize mono-repo with backend and frontend structure`
+
+- [ ] `git init` in `E:\Interview\Salary Management Assessment`
+- [ ] Create root `.gitignore` (node_modules, *.db, .env, dist, .next)
+- [ ] Create root `README.md` (project overview, setup instructions placeholder)
+- [ ] Create `backend/` and `frontend/` empty directories with `.gitkeep`
+- [ ] Create `requirements.md` (already done ✅)
+
+---
+
+## Phase 1 — Backend: Express + TypeScript + Prisma Setup
+**Commit:** `chore(backend): express + typescript + prisma scaffold with sqlite schema`
+
+- [ ] Init `backend/` as a Node.js TypeScript project (`package.json`, `tsconfig.json`)
+- [ ] Install dependencies: `express`, `cors`, `dotenv`, `@prisma/client`, `zod`
+- [ ] Install dev dependencies: `typescript`, `ts-node`, `nodemon`, `prisma`, `jest`, `supertest`, `@types/*`
+- [ ] Create `backend/src/app.ts` — Express app with CORS, JSON middleware, health route
+- [ ] Create `backend/src/server.ts` — entry point (listens on PORT)
+- [ ] Create `backend/src/lib/prisma.ts` — Prisma singleton
+- [ ] Define `backend/prisma/schema.prisma`:
+  - `Employee` model (id, employeeId, name, email, country, department, role, salary, currency, employmentType, status, hireDate, createdAt, updatedAt)
+  - `ExchangeRate` model (id, currency, rateToUsd, effectiveDate)
+- [ ] Run `prisma migrate dev --name init` to generate SQLite DB
+- [ ] Verify `GET /api/health` returns `{ status: "ok" }`
+- [ ] Add `npm run dev`, `npm run build`, `npm start` scripts
+
+---
+
+## Phase 2 — Backend: Seed Script (10,000 Employees)
+**Commit:** `feat(backend): seed 10,000 employees with faker and exchange rate table`
+
+- [ ] Install `@faker-js/faker`
+- [ ] Create `backend/prisma/seed.ts`:
+  - Seed `ExchangeRate` table by fetching daily rates from `fawazahmed0/exchange-api` (with hardcoded fallbacks: USD=1.0, GBP=1.27, EUR=1.08, INR=0.012 if the API is unreachable)
+  - Generate 10,000 employees with realistic distribution:
+    - Countries: US 40%, IN 30%, UK 20%, DE 10%
+    - Departments: Engineering, Sales, Marketing, HR, Finance, Operations, Product
+    - Employment type: Full-time 80%, Part-time 10%, Contractor 10%
+    - Status: Active 90%, Inactive 10%
+    - Salary ranges per country (local currency)
+    - Unique emails, human-readable `EMP-XXXXX` IDs, realistic hire dates
+  - Use `prisma.createMany` with batching for performance
+- [ ] Add `"prisma": { "seed": "ts-node prisma/seed.ts" }` to `package.json`
+- [ ] Run seed and verify 10,000 records in DB
+- [ ] Add `backend/prisma/seed.ts` to git
+
+---
+
+## Phase 3 — Backend: Employee APIs
+**Commit:** `feat(backend): employee CRUD APIs with pagination, search, filter, sort`
+
+- [ ] Create `backend/src/validators/employee.ts` — Zod schemas for create/update
+- [ ] Create `backend/src/lib/currency.ts` — `toUSD(amount, currency)` helper using DB exchange rates
+- [ ] Create `backend/src/middleware/validate.ts` — Zod validation middleware
+- [ ] Create `backend/src/middleware/errorHandler.ts` — global error handler
+- [ ] Create `backend/src/controllers/employeeController.ts`:
+  - `listEmployees` — paginated, searchable, filterable (country, dept, type, status), sortable
+  - `getEmployee` — single employee by ID
+  - `createEmployee` — validated create with auto-generated employeeId
+  - `updateEmployee` — full PUT update with validation
+  - `updateEmployeeStatus` — PATCH status (ACTIVE ↔ INACTIVE)
+- [ ] Create `backend/src/routes/employees.ts` — wire routes to controller
+- [ ] Register routes in `app.ts`
+- [ ] Manual test all endpoints with curl / REST client
+
+---
+
+## Phase 4 — Backend: Analytics APIs + All Backend Tests
+**Commit:** `feat(backend): analytics APIs + unit tests for all routes and helpers`
+
+- [ ] Create `backend/src/controllers/analyticsController.ts`:
+  - `getOverview` — total active employees, total monthly payroll (USD), avg salary (USD), median salary (USD)
+  - `getByCountry` — headcount + total payroll grouped by country
+  - `getByDepartment` — headcount + total payroll grouped by department
+  - `getSalaryDistribution` — histogram buckets (USD-normalised salary bands)
+- [ ] Create `backend/src/routes/analytics.ts`
+- [ ] Create `backend/src/routes/exchangeRates.ts` — GET exchange rates
+- [ ] Register analytics + exchange-rate routes in `app.ts`
+- [ ] Write `backend/__tests__/lib/currency.test.ts`:
+  - `toUSD` with each currency
+  - Edge cases: zero, large values
+- [ ] Write `backend/__tests__/routes/employees.test.ts`:
+  - GET list: pagination, search, filter, sort
+  - POST: valid create, missing fields (400), duplicate email (409)
+  - GET /:id: found, not found (404)
+  - PUT /:id: valid update, validation error
+  - PATCH /:id/status: activate, deactivate
+- [ ] Write `backend/__tests__/routes/analytics.test.ts`:
+  - Overview KPIs: correct totals
+  - By-country: all 4 countries present
+  - By-department: correct grouping
+  - Salary distribution: correct bucket counts
+- [ ] Configure Jest (`jest.config.ts`, test DB setup/teardown)
+- [ ] Run `npm test` — all tests pass
+- [ ] Run `npm run test:coverage` — target ≥ 70%
+
+---
+
+## Phase 5 — Frontend: Setup + Employee List + Forms + Detail
+**Commit:** `feat(frontend): next.js setup, employee list, add/edit/deactivate, detail page`
+
+- [ ] Init `frontend/` with `npx create-next-app@latest` (TypeScript, App Router, Tailwind)
+- [ ] Install shadcn/ui: `npx shadcn-ui@latest init`
+- [ ] Add shadcn components: `button`, `input`, `select`, `dialog`, `table`, `badge`, `card`, `form`, `label`, `separator`, `dropdown-menu`, `toast`
+- [ ] Install `recharts`, `axios`, `react-hook-form`, `@hookform/resolvers`, `zod`, `lucide-react`
+- [ ] Create `frontend/src/lib/api.ts` — Axios instance pointing to `NEXT_PUBLIC_API_URL`
+- [ ] Create `frontend/src/lib/formatters.ts` — currency, date, number formatters
+- [ ] Create `frontend/src/types/index.ts` — shared TypeScript interfaces
+- [ ] Create `frontend/src/app/layout.tsx` — root layout with sidebar nav (Dashboard / Employees)
+- [ ] **Employee List Page** (`/employees`):
+  - [ ] `EmployeeFilters.tsx` — country, department, employment type, status dropdowns + search input
+  - [ ] `EmployeeTable.tsx` — shadcn Table with sortable columns, status badges, action menu
+  - [ ] Pagination controls (prev/next, page size selector)
+  - [ ] Skeleton loading state
+- [ ] **Add / Edit Employee**:
+  - [ ] `EmployeeForm.tsx` — react-hook-form + Zod validation, all fields
+  - [ ] Add Employee: modal/sheet triggered from list page
+  - [ ] Edit Employee: pre-populated form via sheet
+  - [ ] Deactivate/Reactivate: confirmation dialog → PATCH status
+- [ ] **Employee Detail Page** (`/employees/[id]`):
+  - [ ] `EmployeeDetailCard.tsx` — all fields displayed, edit/deactivate actions
+- [ ] Wire all pages to backend API via `api.ts`
+- [ ] Test manually: add, edit, deactivate, search, filter, paginate
+
+---
+
+## Phase 6 — Frontend: Dashboard + Frontend Tests + Docs + Deploy Config
+**Commit:** `feat(frontend): analytics dashboard, tests, docs, and deployment config`
+
+- [ ] **Dashboard Page** (`/dashboard`):
+  - [ ] `DashboardFilters.tsx` — country + department filter bar
+  - [ ] `KPICard.tsx` — reusable card: total employees, payroll, avg salary, median salary
+  - [ ] `HeadcountByCountry.tsx` — Recharts BarChart
+  - [ ] `PayrollByDepartment.tsx` — Recharts PieChart / RadialChart
+  - [ ] `AvgSalaryByCountry.tsx` — Recharts BarChart
+  - [ ] `SalaryHistogram.tsx` — Recharts BarChart (USD salary bands)
+  - [ ] `EmploymentTypeBreakdown.tsx` — Recharts PieChart
+  - [ ] Wire all charts to `/api/analytics/*` endpoints with loading + error states
+- [ ] **Frontend Tests** (React Testing Library):
+  - [ ] `EmployeeForm.test.tsx` — renders fields, shows validation errors, calls API on submit
+  - [ ] `KPICard.test.tsx` — renders label and formatted value correctly
+  - [ ] `EmployeeTable.test.tsx` — renders rows, handles empty state
+- [ ] **Documentation**:
+  - [ ] Update root `README.md` — full setup guide (clone → install → seed → run)
+  - [ ] Create `ARCHITECTURE.md` — system diagram, tech choices, API overview
+- [ ] **Deployment Config**:
+  - [ ] `backend/Dockerfile` (for Railway)
+  - [ ] `backend/.env.example`
+  - [ ] `frontend/.env.example` (`NEXT_PUBLIC_API_URL`)
+  - [ ] `vercel.json` for frontend root directory config
+  - [ ] Document Railway volume setup for SQLite persistence in README
+
+---
+
+## Summary
+
+| Phase | Commit Message | Deliverable |
+|---|---|---|
+| 0 | `chore: initialize mono-repo` | Repo structure, .gitignore, README |
+| 1 | `chore(backend): express + prisma scaffold` | Running Express server, Prisma schema, SQLite DB |
+| 2 | `feat(backend): seed 10,000 employees` | 10k employees + exchange rates in DB |
+| 3 | `feat(backend): employee CRUD APIs` | Full REST API for employees |
+| 4 | `feat(backend): analytics APIs + tests` | Analytics endpoints + full test suite |
+| 5 | `feat(frontend): employee management UI` | List, add, edit, deactivate, detail pages |
+| 6 | `feat(frontend): dashboard + tests + docs` | Charts, RTL tests, README, deploy config |

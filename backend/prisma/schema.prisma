@@ -1,0 +1,36 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Employee {
+  id             String   @id @default(uuid())
+  employeeId     String   @unique
+  name           String
+  email          String   @unique
+  country        String
+  department     String
+  role           String
+  salary         Float
+  currency       String
+  employmentType String
+  status         String   // ACTIVE, INACTIVE
+  hireDate       DateTime
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("employees")
+}
+
+model ExchangeRate {
+  id            Int      @id @default(autoincrement())
+  currency      String   @unique
+  rateToUsd     Float
+  effectiveDate DateTime @default(now())
+
+  @@map("exchange_rates")
+}
