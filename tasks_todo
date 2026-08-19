@@ -113,28 +113,28 @@
 
 **Commit:** `feat(frontend): next.js setup, employee list, add/edit/deactivate, detail page`
 
-- [ ] Init `frontend/` with `npx create-next-app@latest` (TypeScript, App Router, Tailwind)
-- [ ] Install shadcn/ui: `npx shadcn-ui@latest init`
-- [ ] Add shadcn components: `button`, `input`, `select`, `dialog`, `table`, `badge`, `card`, `form`, `label`, `separator`, `dropdown-menu`, `toast`
-- [ ] Install `recharts`, `axios`, `react-hook-form`, `@hookform/resolvers`, `zod`, `lucide-react`
-- [ ] Create `frontend/src/lib/api.ts` — Axios instance pointing to `NEXT_PUBLIC_API_URL`
-- [ ] Create `frontend/src/lib/formatters.ts` — currency, date, number formatters
-- [ ] Create `frontend/src/types/index.ts` — shared TypeScript interfaces
-- [ ] Create `frontend/src/app/layout.tsx` — root layout with sidebar nav (Dashboard / Employees)
-- [ ] **Employee List Page** (`/employees`):
-  - [ ] `EmployeeFilters.tsx` — country, department, employment type, status dropdowns + search input
-  - [ ] `EmployeeTable.tsx` — shadcn Table with sortable columns, status badges, action menu
-  - [ ] Pagination controls (prev/next, page size selector)
-  - [ ] Skeleton loading state
-- [ ] **Add / Edit Employee**:
-  - [ ] `EmployeeForm.tsx` — react-hook-form + Zod validation, all fields
-  - [ ] Add Employee: modal/sheet triggered from list page
-  - [ ] Edit Employee: pre-populated form via sheet
-  - [ ] Deactivate/Reactivate: confirmation dialog → PATCH status
-- [ ] **Employee Detail Page** (`/employees/[id]`):
-  - [ ] `EmployeeDetailCard.tsx` — all fields displayed, edit/deactivate actions
-- [ ] Wire all pages to backend API via `api.ts`
-- [ ] Test manually: add, edit, deactivate, search, filter, paginate
+- [x] Init `frontend/` with `npx create-next-app@latest` (TypeScript, App Router, Tailwind)
+- [x] Install shadcn/ui: `npx shadcn-ui@latest init`
+- [x] Add shadcn components: `button`, `input`, `select`, `dialog`, `table`, `badge`, `card`, `form`, `label`, `separator`, `dropdown-menu`, `toast`
+- [x] Install `recharts`, `axios`, `react-hook-form`, `@hookform/resolvers`, `zod`, `lucide-react`
+- [x] Create `frontend/src/lib/api.ts` — Axios instance pointing to `NEXT_PUBLIC_API_URL`
+- [x] Create `frontend/src/lib/formatters.ts` — currency, date, number formatters
+- [x] Create `frontend/src/types/index.ts` — shared TypeScript interfaces
+- [x] Create `frontend/src/app/layout.tsx` — root layout with sidebar nav (Dashboard / Employees)
+- [x] **Employee List Page** (`/employees`):
+  - [x] `EmployeeFilters.tsx` — country, department, employment type, status dropdowns + search input
+  - [x] `EmployeeTable.tsx` — shadcn Table with sortable columns, status badges, action menu
+  - [x] Pagination controls (prev/next, page size selector)
+  - [x] Skeleton loading state
+- [x] **Add / Edit Employee**:
+  - [x] `EmployeeForm.tsx` — react-hook-form + Zod validation, all fields
+  - [x] Add Employee: modal/sheet triggered from list page
+  - [x] Edit Employee: pre-populated form via sheet
+  - [x] Deactivate/Reactivate: confirmation dialog → PATCH status
+- [x] **Employee Detail Page** (`/employees/[id]`):
+  - [x] `EmployeeDetailCard.tsx` — all fields displayed, edit/deactivate actions
+- [x] Wire all pages to backend API via `api.ts`
+- [x] Test manually: add, edit, deactivate, search, filter, paginate
 
 ---
 
@@ -142,28 +142,27 @@
 
 **Commit:** `feat(frontend): analytics dashboard, tests, docs, and deployment config`
 
-- [ ] **Dashboard Page** (`/dashboard`):
-  - [ ] `DashboardFilters.tsx` — country + department filter bar
-  - [ ] `KPICard.tsx` — reusable card: total employees, payroll, avg salary, median salary
-  - [ ] `HeadcountByCountry.tsx` — Recharts BarChart
-  - [ ] `PayrollByDepartment.tsx` — Recharts PieChart / RadialChart
-  - [ ] `AvgSalaryByCountry.tsx` — Recharts BarChart
-  - [ ] `SalaryHistogram.tsx` — Recharts BarChart (USD salary bands)
-  - [ ] `EmploymentTypeBreakdown.tsx` — Recharts PieChart
-  - [ ] Wire all charts to `/api/analytics/*` endpoints with loading + error states
-- [ ] **Frontend Tests** (React Testing Library):
-  - [ ] `EmployeeForm.test.tsx` — renders fields, shows validation errors, calls API on submit
-  - [ ] `KPICard.test.tsx` — renders label and formatted value correctly
-  - [ ] `EmployeeTable.test.tsx` — renders rows, handles empty state
-- [ ] **Documentation**:
-  - [ ] Update root `README.md` — full setup guide (clone → install → seed → run)
-  - [ ] Create `ARCHITECTURE.md` — system diagram, tech choices, API overview
-- [ ] **Deployment Config**:
-  - [ ] `backend/Dockerfile` (for Railway)
-  - [ ] `backend/.env.example`
-  - [ ] `frontend/.env.example` (`NEXT_PUBLIC_API_URL`)
-  - [ ] `vercel.json` for frontend root directory config
-  - [ ] Document Railway volume setup for SQLite persistence in README
+- [x] **Dashboard Page** (`/dashboard`):
+  - [x] `DashboardFilters.tsx` — country + department filter bar with brand theme styling
+  - [x] `KPICard.tsx` — KPI card displaying main metrics using large `Fraunces` numbers in `#F1F1F2` or highlight `#D3FE73`
+  - [x] `HeadcountByCountry.tsx` — Recharts BarChart using Deep Forest Green (`#014D43`) and Soft Lime (`#CBDF7A`)
+  - [x] `PayrollByDepartment.tsx` — Recharts Donut/PieChart using brand color palette (green, lime, cyan, yellow)
+  - [x] `AvgSalaryByCountry.tsx` — Recharts BarChart comparing average USD salaries
+  - [x] `SalaryHistogram.tsx` — Recharts BarChart displaying population distribution across salary bands
+  - [x] `EmploymentTypeBreakdown.tsx` — Recharts PieChart (Full-time / Part-time / Contractor)
+  - [x] Wire all charts to `/api/analytics/*` endpoints with loader skeletons and error states
+- [x] **Frontend Tests** (React Testing Library):
+  - [x] `EmployeeForm.test.tsx` — renders fields, shows validation errors, calls API on submit
+  - [x] `KPICard.test.tsx` — renders label and formatted value correctly
+  - [x] `EmployeeTable.test.tsx` — renders rows, handles empty state
+- [x] **Documentation**:
+  - [x] Update root `README.md` — full setup guide (clone → install → seed → run)
+  - [x] Create `ARCHITECTURE.md` — system diagram, tech choices, API overview
+- [x] **Deployment Config**:
+  - [x] `backend/Dockerfile` (for Railway)
+  - [x] `backend/.env.example`
+  - [x] `frontend/.env.example` (`NEXT_PUBLIC_API_URL`)
+  - [x] `vercel.json` for frontend root directory config
 
 ---
 

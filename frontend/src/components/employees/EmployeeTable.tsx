@@ -210,6 +210,7 @@ export default function EmployeeTable({
             <button
               onClick={() => setPage(pagination.page - 1)}
               disabled={pagination.page === 1}
+              data-testid="prev-page-btn"
               className="p-1.5 bg-[#060A1E] border border-[#1E294B] text-[#9BA3B2] hover:text-[#F1F1F2] hover:bg-[#1E294B] rounded disabled:opacity-30 disabled:pointer-events-none transition-colors"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -217,6 +218,7 @@ export default function EmployeeTable({
             <button
               onClick={() => setPage(pagination.page + 1)}
               disabled={pagination.page === pagination.pages}
+              data-testid="next-page-btn"
               className="p-1.5 bg-[#060A1E] border border-[#1E294B] text-[#9BA3B2] hover:text-[#F1F1F2] hover:bg-[#1E294B] rounded disabled:opacity-30 disabled:pointer-events-none transition-colors"
             >
               <ChevronRight className="w-5 h-5" />
