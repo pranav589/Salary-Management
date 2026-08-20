@@ -42,9 +42,33 @@ export function formatDate(dateString: string): string {
 /**
  * Resolves a full country name from an ISO country code using a dynamic countries list.
  */
+const DEFAULT_COUNTRIES: Record<string, string> = {
+  US: 'United States',
+  IN: 'India',
+  UK: 'United Kingdom',
+  DE: 'Germany',
+};
+
 export function getCountryName(code: string, countriesList?: { code: string; name: string }[]): string {
   if (!code) return '-';
-  if (!countriesList) return code;
-  const match = countriesList.find((c) => c.code.toUpperCase() === code.toUpperCase());
-  return match ? match.name : code;
+  const lookupCode = code.toUpperCase();
+  if (countriesList) {
+    const match = countriesList.find((c) => c.code.toUpperCase() === lookupCode);
+    if (match) return match.name;
+  }
+  return DEFAULT_COUNTRIES[lookupCode] || code;
+}
+
+/**
+ * Formats a numeric USD value into a compact currency string.
+ * E.g., 1000 -> $1K, 1200000 -> $1.2M
+ */
+export function formatCompactUsd(amount: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    notation: 'compact',
+    compactDisplay: 'short',
+    maximumFractionDigits: 1,
+  }).format(amount);
 }

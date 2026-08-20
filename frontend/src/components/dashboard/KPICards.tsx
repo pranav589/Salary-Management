@@ -1,5 +1,5 @@
 import { Users, DollarSign, TrendingUp, Award } from 'lucide-react';
-import { formatUsd } from '@/lib/formatters';
+import { formatCompactUsd } from '@/lib/formatters';
 import { AnalyticsOverview } from '@/types';
 
 interface KPICardsProps {
@@ -16,19 +16,19 @@ export default function KPICards({ overview }: KPICardsProps) {
     },
     {
       title: 'Monthly Spend',
-      value: formatUsd(overview?.totalMonthlyPayrollUsd ?? 0),
+      value: formatCompactUsd(overview?.totalMonthlyPayrollUsd ?? 0),
       icon: DollarSign,
       desc: 'Total payroll spend',
     },
     {
       title: 'Average Salary',
-      value: formatUsd(overview?.averageSalaryUsd ?? 0),
+      value: formatCompactUsd(overview?.averageSalaryUsd ?? 0),
       icon: TrendingUp,
       desc: 'Annualized mean pay',
     },
     {
       title: 'Median Salary',
-      value: formatUsd(overview?.medianSalaryUsd ?? 0),
+      value: formatCompactUsd(overview?.medianSalaryUsd ?? 0),
       icon: Award,
       desc: 'Annualized mid pay',
     },

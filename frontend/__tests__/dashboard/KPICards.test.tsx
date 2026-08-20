@@ -24,15 +24,15 @@ describe('KPICards Component', () => {
     render(<KPICards overview={mockOverview} />);
     
     expect(screen.getByText('42')).toBeInTheDocument();
-    expect(screen.getByText('$12,500.50')).toBeInTheDocument();
-    expect(screen.getByText('$85,000.00')).toBeInTheDocument();
-    expect(screen.getByText('$78,000.00')).toBeInTheDocument();
+    expect(screen.getByText('$12.5K')).toBeInTheDocument();
+    expect(screen.getByText('$85.0K')).toBeInTheDocument();
+    expect(screen.getByText('$78.0K')).toBeInTheDocument();
   });
 
   it('renders default zero states when no overview data is provided', () => {
     render(<KPICards />);
     
     expect(screen.getByText('0')).toBeInTheDocument();
-    expect(screen.getAllByText('$0.00')).toHaveLength(3); // Monthly spend, average, median
+    expect(screen.getAllByText('$0.0')).toHaveLength(3); // Monthly spend, average, median
   });
 });
