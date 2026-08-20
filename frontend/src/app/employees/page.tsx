@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
+import { toast } from 'sonner';
 import { Employee } from '@/types';
 import EmployeeForm from '@/components/EmployeeForm';
 import EmployeeFilters from '@/components/employees/EmployeeFilters';
@@ -70,7 +71,12 @@ export default function EmployeesPage() {
       queryClient.invalidateQueries({ queryKey: ['employee'] });
       queryClient.invalidateQueries({ queryKey: ['analytics'] });
       setIsFormOpen(false);
+      const isEdit = !!selectedEmployee;
       setSelectedEmployee(undefined);
+      toast.success(isEdit ? 'Employee updated successfully!' : 'Employee created successfully!');
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.error?.message || 'Failed to save employee.');
     },
   });
 
@@ -79,10 +85,15 @@ export default function EmployeesPage() {
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
       return api.patch(`/employees/${id}/status`, { status });
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['employees'] });
       queryClient.invalidateQueries({ queryKey: ['employee'] });
       queryClient.invalidateQueries({ queryKey: ['analytics'] });
+      const statusText = variables.status === 'ACTIVE' ? 'activated' : 'deactivated';
+      toast.success(`Employee ${statusText} successfully!`);
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.error?.message || 'Failed to update employee status.');
     },
   });
 

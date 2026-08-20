@@ -54,7 +54,10 @@ export async function listEmployees(options: ListEmployeesOptions) {
   const [employees, total] = await prisma.$transaction([
     prisma.employee.findMany({
       where,
-      orderBy: { [sortBy]: sortOrder },
+      orderBy: [
+        { [sortBy]: sortOrder },
+        { employeeId: 'asc' }
+      ],
       skip: offset,
       take: limit,
     }),

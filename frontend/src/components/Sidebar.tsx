@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Users, LayoutDashboard, RefreshCw, Circle } from 'lucide-react';
 import { api } from '@/lib/api';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -39,6 +40,10 @@ export default function Sidebar() {
       queryClient.invalidateQueries({ queryKey: ['exchangeRates'] });
       queryClient.invalidateQueries({ queryKey: ['analytics'] });
       queryClient.invalidateQueries({ queryKey: ['employees'] });
+      toast.success('Exchange rates synced successfully!');
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.error?.message || 'Failed to sync exchange rates.');
     },
   });
 

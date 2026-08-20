@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inclusive_Sans, Fraunces } from "next/font/google";
 import Sidebar from "@/components/Sidebar";
 import QueryProvider from "@/providers/QueryProvider";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const inclusiveSans = Inclusive_Sans({
@@ -38,6 +39,7 @@ export default function RootLayout({
           <main className="flex-1 pl-64 min-h-screen bg-[#060A1E] min-w-0">
             {children}
           </main>
+          <Toaster theme="dark" closeButton />
         </QueryProvider>
       </body>
     </html>
