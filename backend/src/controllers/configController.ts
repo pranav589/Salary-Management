@@ -1,24 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-import { prisma } from '../lib/prisma';
+import * as configService from '../services/configService';
 
 /**
  * Fetch countries and departments config lists
  */
 export async function getConfigs(req: Request, res: Response, next: NextFunction) {
   try {
-    const countries = await prisma.country.findMany({
-      orderBy: { name: 'asc' },
-    });
-    const departments = await prisma.department.findMany({
-      orderBy: { name: 'asc' },
-    });
-
+    const data = await configService.getConfigs();
     res.status(200).json({
       success: true,
-      data: {
-        countries,
-        departments: departments.map((d) => d.name),
-      },
+      data,
     });
   } catch (error) {
     next(error);
@@ -31,23 +22,7 @@ export async function getConfigs(req: Request, res: Response, next: NextFunction
 export async function addCountry(req: Request, res: Response, next: NextFunction) {
   try {
     const { code, name, currency } = req.body;
-    if (!code || !name || !currency) {
-      res.status(400).json({
-        success: false,
-        message: 'code, name, and currency are all required fields',
-      });
-      return;
-    }
-
-    const country = await prisma.country.upsert({
-      where: { code: code.toUpperCase() },
-      update: { name, currency: currency.toUpperCase() },
-      create: {
-        code: code.toUpperCase(),
-        name,
-        currency: currency.toUpperCase(),
-      },
-    });
+    const country = await configService.addCountry(code, name, currency);
 
     res.status(201).json({
       success: true,
@@ -65,19 +40,7 @@ export async function addCountry(req: Request, res: Response, next: NextFunction
 export async function addDepartment(req: Request, res: Response, next: NextFunction) {
   try {
     const { name } = req.body;
-    if (!name) {
-      res.status(400).json({
-        success: false,
-        message: 'name is a required field',
-      });
-      return;
-    }
-
-    const department = await prisma.department.upsert({
-      where: { name },
-      update: { name },
-      create: { name },
-    });
+    const department = await configService.addDepartment(name);
 
     res.status(201).json({
       success: true,

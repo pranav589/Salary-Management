@@ -14,6 +14,12 @@ jest.mock('../../src/lib/prisma', () => ({
     },
     country: {
       findUnique: jest.fn().mockResolvedValue({ code: 'US', name: 'United States', currency: 'USD' }),
+      findMany: jest.fn().mockResolvedValue([
+        { code: 'US', name: 'United States', currency: 'USD' },
+        { code: 'IN', name: 'India', currency: 'INR' },
+        { code: 'UK', name: 'United Kingdom', currency: 'GBP' },
+        { code: 'DE', name: 'Germany', currency: 'EUR' }
+      ]),
     },
     department: {
       findUnique: jest.fn().mockResolvedValue({ name: 'Engineering' }),
@@ -79,6 +85,12 @@ describe('Analytics API Routes', () => {
     it('should aggregate headcount and monthly payroll spend by country', async () => {
       (prisma.employee.findMany as jest.Mock).mockResolvedValue(mockActiveEmployees);
       (prisma.exchangeRate.findMany as jest.Mock).mockResolvedValue(mockExchangeRates);
+      (prisma.country.findMany as jest.Mock).mockResolvedValue([
+        { code: 'US', name: 'United States', currency: 'USD' },
+        { code: 'IN', name: 'India', currency: 'INR' },
+        { code: 'UK', name: 'United Kingdom', currency: 'GBP' },
+        { code: 'DE', name: 'Germany', currency: 'EUR' }
+      ]);
 
       const res = await request(app).get('/api/analytics/by-country');
 
