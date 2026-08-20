@@ -42,7 +42,7 @@
 
 - [x] Install `@faker-js/faker`
 - [x] Create `backend/prisma/seed.ts`:
-  - Seed `ExchangeRate` table by fetching daily rates from `fawazahmed0/exchange-api`
+  - Seed `ExchangeRate` table by fetching daily rates
   - Generate 10,000 employees with realistic distribution:
     - Countries: US 40%, IN 30%, UK 20%, DE 10%
     - Departments: Engineering, Sales, Marketing, HR, Finance, Operations, Product
@@ -168,12 +168,12 @@
 
 ## Summary
 
-| Phase | Commit Message                              | Deliverable                                      |
-| ----- | ------------------------------------------- | ------------------------------------------------ |
-| 0     | `chore: initialize mono-repo`               | Repo structure, .gitignore, README               |
+| Phase | Commit Message                              | Deliverable                                                 |
+| ----- | ------------------------------------------- | ----------------------------------------------------------- |
+| 0     | `chore: initialize mono-repo`               | Repo structure, .gitignore, README                          |
 | 1     | `chore(backend): express + prisma scaffold` | Running Express server, Prisma schema, PostgreSQL (Neon DB) |
-| 2     | `feat(backend): seed 10,000 employees`      | 10k employees + exchange rates in DB             |
-| 3     | `feat(backend): employee CRUD APIs`         | Full REST API for employees                      |
-| 4     | `feat(backend): analytics APIs + tests`     | Analytics endpoints + full test suite            |
-| 5     | `feat(frontend): employee management UI`    | List, add, edit, deactivate, detail pages        |
-| 6     | `feat(frontend): dashboard + tests + docs`  | Charts, RTL tests, README, deploy config         |
+| 2     | `feat(backend): seed 10,000 employees`      | 10k employees + exchange rates in DB                        |
+| 3     | `feat(backend): employee CRUD APIs`         | Full REST API for employees                                 |
+| 4     | `feat(backend): analytics APIs + tests`     | Analytics endpoints + full test suite                       |
+| 5     | `feat(frontend): employee management UI`    | List, add, edit, deactivate, detail pages                   |
+| 6     | `feat(frontend): dashboard + tests + docs`  | Charts, RTL tests, README, deploy config                    |
